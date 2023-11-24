@@ -9,3 +9,4 @@
 - [x] #2 - DB 생성 및 앱 설정 파일 설정
 - [x] #3 - MemberControllerTest.t1 post:/member/login
 - [x] #4 - REST API에 맞지 않는 spring security 설정 제거
+- [x] #5 - 앱 시작 시 회원 2명 자동 생성

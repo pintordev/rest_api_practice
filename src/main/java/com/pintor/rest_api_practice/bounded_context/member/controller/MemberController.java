@@ -1,4 +1,4 @@
-package com.pintor.rest_api_practice.bounded_context.member;
+package com.pintor.rest_api_practice.bounded_context.member.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
