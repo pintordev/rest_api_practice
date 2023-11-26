@@ -1,5 +1,6 @@
 package com.pintor.rest_api_practice.base.security.config;
 
+import com.pintor.rest_api_practice.base.security.filter.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,11 +10,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -33,6 +37,10 @@ public class SecurityConfig {
                         .disable()) // 폼 로그인 방식 끄기
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 끄기
+                .addFilterBefore( // b filter 실행 전 a filter 실행
+                        jwtAuthorizationFilter, // 강제 인증 할당 메서드 실행
+                        UsernamePasswordAuthenticationFilter.class
+                )
         ;
 
         return http.build();

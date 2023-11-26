@@ -1,0 +1,74 @@
+package com.pintor.rest_api_practice.base.security.filter;
+
+import com.pintor.rest_api_practice.base.jwt.JwtProvider;
+import com.pintor.rest_api_practice.bounded_context.v1.member.entity.Member;
+import com.pintor.rest_api_practice.bounded_context.v1.member.repository.MemberRepository;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+
+@RequiredArgsConstructor
+@Component
+public class JwtAuthorizationFilter extends OncePerRequestFilter {
+
+    private final JwtProvider jwtProvider;
+    private final MemberRepository memberRepository;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        // 보통 토큰 저장 헤더 키 == "Authorization", 값 == "Bearer **"
+        String bearerToken = request.getHeader("Authorization");
+
+        if (bearerToken != null) { // 토큰 존재 여부 체크
+
+            String accessToken = bearerToken.substring("Bearer ".length()); // 토큰 추출, O(1)
+
+            if (this.jwtProvider.verify(accessToken)) { // 토큰 검증
+
+                String username = this.jwtProvider.getClaims(accessToken).get("username").toString(); // username 추출
+
+                Member member = this.memberRepository.findByUsername(username)
+                        .orElseThrow(() -> new UsernameNotFoundException(username)); // member 가져옴
+
+                this.forceAuthentication(member); // 강제 인증 할당
+            }
+
+        }
+
+        filterChain.doFilter(request, response);
+    }
+
+    // 강제 인증 할당 메서드
+    private void forceAuthentication(Member member) {
+
+        // member로부터 user 객체 생성
+        User user = new User(member.getUsername(), member.getPassword(), member.getAuthorities());
+
+        // 스프링 시큐리티 내에 저장할 authenticationToken 객체 생성
+        UsernamePasswordAuthenticationToken authenticationToken =
+                UsernamePasswordAuthenticationToken.authenticated(
+                        user,
+                        null,
+                        member.getAuthorities()
+                );
+
+        // 스프링 시큐리티 내에 생성한 authenticationToken 객체를 저장할 context 객체 생성
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        // context 객체에 authenticationToken 객체 저장
+        context.setAuthentication(authenticationToken);
+        // 스프링 시큐리티에 context 등록
+        SecurityContextHolder.setContext(context);
+    }
+}
