@@ -45,8 +45,6 @@ public class MemberController {
 
         String accessToken = this.memberService.getAccessToken(loginRequest.getUsername(), loginRequest.getPassword());
 
-        response.addHeader("accessToken", accessToken);
-
         return RsData.of(
                 "S-1",
                 "액세스 토큰이 생성되었습니다",

@@ -8,6 +8,7 @@
 - [x] #7 - MemberControllerTest.t2 post:/member/login; include accessToken in response header
 - [x] #8 - JwtProvider를 통해 토큰 생성
 - [x] #9 - RsData, Response 클래스 도입해서 응답 규격화
+- [x] #10 - 응답 헤더에서 accessToken 삭제
 
 ## 23-11-24
 - [x] #1 - 프로젝트 세팅
