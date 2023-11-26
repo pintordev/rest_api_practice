@@ -9,6 +9,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.MediaType.ALL_VALUE;
@@ -59,9 +61,9 @@ public class MemberController {
     }
 
     @GetMapping(value = "/me", consumes = ALL_VALUE)
-    public RsData<MeResponse> me() {
+    public RsData<MeResponse> me(@AuthenticationPrincipal User user) { // 로그인 된 사용자 받아옴
 
-        Member member = this.memberService.getUserByUsername("user1");
+        Member member = this.memberService.getUserByUsername(user.getUsername());
 
         return RsData.of(
                 "S-1",

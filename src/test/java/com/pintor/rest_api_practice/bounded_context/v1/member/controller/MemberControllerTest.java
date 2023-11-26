@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -130,5 +131,26 @@ class MemberControllerTest {
                 .andExpect(jsonPath("$.message").exists())
                 .andExpect(jsonPath("$.data.member.id").exists())
                 .andExpect(jsonPath("$.data.member.username").exists());
+    }
+
+    @Test
+    @WithUserDetails("user1") // user1 로 로그인
+    @DisplayName("get:/api/v1/member/me; inquire user1 information")
+    public void t5() throws Exception {
+
+        // given
+
+        // when
+        ResultActions resultActions = mockMvc
+                .perform(get("/api/v1/member/me"))
+                .andDo(print());
+
+        // then
+        resultActions
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.code").value("S-1"))
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.data.member.id").exists())
+                .andExpect(jsonPath("$.data.member.username").value("user1"));
     }
 }

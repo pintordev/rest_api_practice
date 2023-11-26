@@ -1,4 +1,4 @@
-package com.pintor.rest_api_practice.base.security;
+package com.pintor.rest_api_practice.base.security.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +19,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+                .securityMatcher("/api/**") // 아래의 모든 설정 /api/** 경로에만 적용
+                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                        .requestMatchers("/api/*/member/login").permitAll() // /member/login 아무나 접속 가능
+                        .anyRequest().authenticated()) // 그 외는 인증된 사용자만 접속 가능
                 .cors(cors -> cors
                         .disable()) // 타 도메인에서 API 호출 가능
                 .csrf(csrf -> csrf
