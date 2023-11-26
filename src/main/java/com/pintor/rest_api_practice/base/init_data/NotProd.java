@@ -1,7 +1,7 @@
 package com.pintor.rest_api_practice.base.init_data;
 
-import com.pintor.rest_api_practice.bounded_context.member.entity.Member;
-import com.pintor.rest_api_practice.bounded_context.member.service.MemberService;
+import com.pintor.rest_api_practice.bounded_context.v1.member.entity.Member;
+import com.pintor.rest_api_practice.bounded_context.v1.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

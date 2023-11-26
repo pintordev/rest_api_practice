@@ -1,4 +1,4 @@
-package com.pintor.rest_api_practice.bounded_context.member;
+package com.pintor.rest_api_practice.bounded_context.v1.member.controller;
 
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
@@ -31,14 +31,14 @@ class MemberControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("post:/member/login")
+    @DisplayName("post:/api/v1/member/login")
     public void t1() throws Exception {
 
         // given
 
         // when
         ResultActions resultActions = mockMvc
-                .perform(post("/member/login")
+                .perform(post("/api/v1/member/login")
                         .content("""
                                 {
                                     "username": "user1",
@@ -55,14 +55,14 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("post:/member/login; include accessToken in response header")
+    @DisplayName("post:/api/v1/member/login; include accessToken in response header")
     public void t2() throws Exception {
 
         // given
 
         // when
         ResultActions resultActions = mockMvc
-                .perform(post("/member/login")
+                .perform(post("/api/v1/member/login")
                         .content("""
                                 {
                                     "username": "user1",
@@ -85,14 +85,14 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("post:/member/login; assert json response body")
+    @DisplayName("post:/api/v1/member/login; assert json response body")
     public void t3() throws Exception {
 
         // given
 
         // when
         ResultActions resultActions = mockMvc
-                .perform(post("/member/login")
+                .perform(post("/api/v1/member/login")
                         .content("""
                                 {
                                     "username": "user1",

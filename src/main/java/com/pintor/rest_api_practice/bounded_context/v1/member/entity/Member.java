@@ -1,4 +1,4 @@
-package com.pintor.rest_api_practice.bounded_context.member.entity;
+package com.pintor.rest_api_practice.bounded_context.v1.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pintor.rest_api_practice.base.entity.BaseEntity;

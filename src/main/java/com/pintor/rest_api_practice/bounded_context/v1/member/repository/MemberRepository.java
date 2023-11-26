@@ -1,6 +1,6 @@
-package com.pintor.rest_api_practice.bounded_context.member.repository;
+package com.pintor.rest_api_practice.bounded_context.v1.member.repository;
 
-import com.pintor.rest_api_practice.bounded_context.member.entity.Member;
+import com.pintor.rest_api_practice.bounded_context.v1.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

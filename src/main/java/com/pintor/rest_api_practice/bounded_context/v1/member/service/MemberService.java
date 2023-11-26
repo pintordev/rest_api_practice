@@ -1,8 +1,8 @@
-package com.pintor.rest_api_practice.bounded_context.member.service;
+package com.pintor.rest_api_practice.bounded_context.v1.member.service;
 
 import com.pintor.rest_api_practice.base.jwt.JwtProvider;
-import com.pintor.rest_api_practice.bounded_context.member.entity.Member;
-import com.pintor.rest_api_practice.bounded_context.member.repository.MemberRepository;
+import com.pintor.rest_api_practice.bounded_context.v1.member.entity.Member;
+import com.pintor.rest_api_practice.bounded_context.v1.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
