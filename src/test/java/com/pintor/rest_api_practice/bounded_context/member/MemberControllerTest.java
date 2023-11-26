@@ -7,12 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.StandardCharsets;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,7 +30,7 @@ class MemberControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("post:/member/login #1")
+    @DisplayName("post:/member/login")
     public void t1() throws Exception {
 
         // given
@@ -48,5 +51,35 @@ class MemberControllerTest {
         resultActions
                 .andExpect(status().is2xxSuccessful());
 
+    }
+
+    @Test
+    @DisplayName("post:/member/login; include accessToken in response header")
+    public void t2() throws Exception {
+
+        // given
+
+        // when
+        ResultActions resultActions = mockMvc
+                .perform(post("/member/login")
+                        .content("""
+                                {
+                                    "username": "user1",
+                                    "password": "1234"
+                                }
+                                """.stripIndent())
+                        .contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8)))
+                .andDo(print());
+
+        // then
+        resultActions
+                .andExpect(status().is2xxSuccessful());
+
+        // 요청 결과에서 응답 헤더에 포함된 accessToken 추출 과정
+        MvcResult result = resultActions.andReturn(); // 결과 리턴
+        MockHttpServletResponse response =  result.getResponse(); // 응답 추출
+        String accessToken = response.getHeader("accessToken"); // 응답 헤더에서 accessToken 추출
+
+        assertThat(accessToken).isNotEmpty();
     }
 }
