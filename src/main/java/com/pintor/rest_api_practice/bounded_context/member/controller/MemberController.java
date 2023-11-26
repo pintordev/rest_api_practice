@@ -1,12 +1,13 @@
 package com.pintor.rest_api_practice.bounded_context.member.controller;
 
+import com.pintor.rest_api_practice.base.rsData.RsData;
 import com.pintor.rest_api_practice.bounded_context.member.service.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,6 @@ public class MemberController {
     private final MemberService memberService;
 
     @Getter
-    @Setter
     public static class LoginRequest {
 
         @NotBlank // null, "", " " 불허
@@ -32,14 +32,25 @@ public class MemberController {
         private String password;
     }
 
+    @Getter
+    @AllArgsConstructor
+    public static class LoginResponse {
+
+        private final String accessToken;
+    }
+
     @PostMapping("/login")
-    public String login(@Valid @RequestBody LoginRequest loginRequest,
+    public RsData<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest,
                         HttpServletResponse response) {
 
         String accessToken = this.memberService.getAccessToken(loginRequest.getUsername(), loginRequest.getPassword());
 
         response.addHeader("accessToken", accessToken);
 
-        return "response body";
+        return RsData.of(
+                "S-1",
+                "액세스 토큰이 생성되었습니다",
+                new LoginResponse(accessToken)
+        );
     }
 }
