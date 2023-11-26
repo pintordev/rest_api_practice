@@ -14,6 +14,7 @@
 - [x] #13 - MemberControllerTest.t4 get:/api/v1/member/me; inquire user information
 - [x] #14 - 로그인이 필요한 경로에서 로그인한 유저 정보 받아오도록 CustomUserDetailsService 추가
 - [x] #15 - 요청 헤더 Authorization 키에 accessToken 포함 시 자동 로그인
+- [x] #16 - JwtAuthorizationFilter에서 username 대신 id로 조회하도록 변경
 
 ## 23-11-24
 - [x] #1 - 프로젝트 세팅

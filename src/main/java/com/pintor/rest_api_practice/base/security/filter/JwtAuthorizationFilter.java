@@ -1,5 +1,6 @@
 package com.pintor.rest_api_practice.base.security.filter;
 
+import com.pintor.rest_api_practice.base.exception.DataNotFoundException;
 import com.pintor.rest_api_practice.base.jwt.JwtProvider;
 import com.pintor.rest_api_practice.bounded_context.v1.member.entity.Member;
 import com.pintor.rest_api_practice.bounded_context.v1.member.repository.MemberRepository;
@@ -12,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -37,10 +37,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             if (this.jwtProvider.verify(accessToken)) { // 토큰 검증
 
-                String username = this.jwtProvider.getClaims(accessToken).get("username").toString(); // username 추출
+                Long id = (Long) this.jwtProvider.getClaims(accessToken).get("id"); // username 추출
 
-                Member member = this.memberRepository.findByUsername(username)
-                        .orElseThrow(() -> new UsernameNotFoundException(username)); // member 가져옴
+                Member member = this.memberRepository.findById(id)
+                        .orElseThrow(() -> new DataNotFoundException("user not found on id " + id)); // member 가져옴
 
                 this.forceAuthentication(member); // 강제 인증 할당
             }
