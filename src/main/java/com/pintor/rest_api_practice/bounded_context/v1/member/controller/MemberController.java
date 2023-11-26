@@ -1,6 +1,7 @@
 package com.pintor.rest_api_practice.bounded_context.v1.member.controller;
 
 import com.pintor.rest_api_practice.base.rsData.RsData;
+import com.pintor.rest_api_practice.bounded_context.v1.member.entity.Member;
 import com.pintor.rest_api_practice.bounded_context.v1.member.service.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -8,11 +9,9 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequestMapping(value = "/api/v1/member", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE) // 입출력 json
@@ -51,4 +50,24 @@ public class MemberController {
                 new LoginResponse(accessToken)
         );
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class MeResponse {
+
+        private final Member member;
+    }
+
+    @GetMapping(value = "/me", consumes = ALL_VALUE)
+    public RsData<MeResponse> me() {
+
+        Member member = this.memberService.getUserByUsername("user1");
+
+        return RsData.of(
+                "S-1",
+                "성공",
+                new MeResponse(member)
+        );
+    }
+
 }
