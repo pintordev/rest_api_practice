@@ -9,6 +9,7 @@
 - [x] #8 - JwtProvider를 통해 토큰 생성
 - [x] #9 - RsData, Response 클래스 도입해서 응답 규격화
 - [x] #10 - 응답 헤더에서 accessToken 삭제
+- [x] #11 - MemberControllerTest.t3 post:/member/login; assert json response body
 
 ## 23-11-24
 - [x] #1 - 프로젝트 세팅

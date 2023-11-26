@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -81,5 +82,32 @@ class MemberControllerTest {
         String accessToken = response.getHeader("accessToken"); // 응답 헤더에서 accessToken 추출
 
         assertThat(accessToken).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("post:/member/login; assert json response body")
+    public void t3() throws Exception {
+
+        // given
+
+        // when
+        ResultActions resultActions = mockMvc
+                .perform(post("/member/login")
+                        .content("""
+                                {
+                                    "username": "user1",
+                                    "password": "1234"
+                                }
+                                """.stripIndent())
+                        .contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8)))
+                .andDo(print());
+
+        // then
+        resultActions
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.code").value("S-1"))
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.data.accessToken").exists());
+
     }
 }
