@@ -6,6 +6,7 @@
 
 ## 23-11-26
 - [x] #7 - MemberControllerTest.t2 post:/member/login; include accessToken in response header
+- [x] #8 - JwtProvider를 통해 토큰 생성
 
 ## 23-11-24
 - [x] #1 - 프로젝트 세팅

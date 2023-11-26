@@ -1,6 +1,5 @@
 package com.pintor.rest_api_practice.bounded_context.member.controller;
 
-import com.pintor.rest_api_practice.bounded_context.member.entity.Member;
 import com.pintor.rest_api_practice.bounded_context.member.service.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -34,11 +33,13 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public Member login(@Valid @RequestBody LoginRequest loginRequest,
+    public String login(@Valid @RequestBody LoginRequest loginRequest,
                         HttpServletResponse response) {
 
-        response.addHeader("accessToken", "jwt authentication token");
+        String accessToken = this.memberService.getAccessToken(loginRequest.getUsername(), loginRequest.getPassword());
 
-        return this.memberService.getUserByUsername(loginRequest.getUsername());
+        response.addHeader("accessToken", accessToken);
+
+        return "response body";
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 @Getter
 @SuperBuilder(toBuilder = true)
@@ -34,5 +35,13 @@ public class Member extends BaseEntity {
         authorities.add(new SimpleGrantedAuthority("member"));
 
         return authorities;
+    }
+
+    public Map<String, Object> toClaims() {
+
+        return Map.of(
+                "id", this.getId(),
+                "username", this.getUsername()
+        );
     }
 }
