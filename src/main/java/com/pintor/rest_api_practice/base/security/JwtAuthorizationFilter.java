@@ -1,4 +1,4 @@
-package com.pintor.rest_api_practice.base.security.filter;
+package com.pintor.rest_api_practice.base.security;
 
 import com.pintor.rest_api_practice.base.exception.DataNotFoundException;
 import com.pintor.rest_api_practice.base.jwt.JwtProvider;

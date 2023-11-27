@@ -8,6 +8,7 @@
 - [x] #17 - 로그인 예외상황 실패 메시지 상황별로 정리
 - [x] #18 - SpringDoc으로 API 설명 문서 자동 작성
 - [x] #19 - 스웨거 로그인 기능 구현
+- [x] #20 - 스프링 시큐리티 인증 에러 메시지 커스터마이징
 
 ## 23-11-26
 - [x] #7 - MemberControllerTest.t2 post:/member/login; include accessToken in response header

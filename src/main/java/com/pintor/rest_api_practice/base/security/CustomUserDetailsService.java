@@ -1,4 +1,4 @@
-package com.pintor.rest_api_practice.base.security.service;
+package com.pintor.rest_api_practice.base.security;
 
 import com.pintor.rest_api_practice.bounded_context.v1.member.entity.Member;
 import com.pintor.rest_api_practice.bounded_context.v1.member.repository.MemberRepository;
