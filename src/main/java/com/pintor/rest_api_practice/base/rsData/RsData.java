@@ -20,4 +20,6 @@ public class RsData<T> {
     public static <T> RsData<T> of(String resultCode, String msg) {
         return of(resultCode, msg, null);
     }
+
+
 }

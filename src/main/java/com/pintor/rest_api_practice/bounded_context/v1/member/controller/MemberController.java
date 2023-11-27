@@ -44,7 +44,16 @@ public class MemberController {
     public RsData<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest,
                         HttpServletResponse response) {
 
-        String accessToken = this.memberService.getAccessToken(loginRequest.getUsername(), loginRequest.getPassword());
+        Member member = this.memberService.getUserByUsername(loginRequest.getUsername());
+
+        // 로그인 ID 검증
+        if (member == null) return RsData.of("F-1", "존재하지 않는 회원입니다");
+
+        // 비밀번호 검증
+        if (!this.memberService.isPasswordMatched(member.getPassword(), loginRequest.getPassword()))
+            return RsData.of("F-2", "비밀번호가 일치하지 않습니다");
+
+        String accessToken = this.memberService.getAccessToken(member);
 
         return RsData.of(
                 "S-1",
@@ -67,7 +76,7 @@ public class MemberController {
 
         return RsData.of(
                 "S-1",
-                "성공",
+                "회원 정보를 반환했습니다",
                 new MeResponse(member)
         );
     }

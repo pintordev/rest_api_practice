@@ -33,15 +33,12 @@ public class MemberService {
                 .orElse(null);
     }
 
-    public String getAccessToken(String username, String password) {
-
-        Member member = this.memberRepository.findByUsername(username)
-                .orElse(null);
-
-        if (member == null) return null;
-
-        if (!passwordEncoder.matches(password, member.getPassword())) return null;
+    public String getAccessToken(Member member) {
 
         return this.jwtProvider.genToken(member.toClaims(), 60 * 60 * 24 * 365); // 1년 유효 토큰 생성
+    }
+
+    public boolean isPasswordMatched(String encoded, String raw) {
+        return this.passwordEncoder.matches(raw, encoded);
     }
 }

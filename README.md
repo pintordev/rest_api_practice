@@ -4,6 +4,9 @@
 >- **REST API 공부 내용 정리**
 >- **연습용 리포지터리**
 
+## 23-11-27
+- [x] #17 - 로그인 예외상황 실패 메시지 상황별로 정리
+
 ## 23-11-26
 - [x] #7 - MemberControllerTest.t2 post:/member/login; include accessToken in response header
 - [x] #8 - JwtProvider를 통해 토큰 생성
