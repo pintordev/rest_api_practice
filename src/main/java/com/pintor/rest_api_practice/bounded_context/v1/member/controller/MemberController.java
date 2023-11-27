@@ -4,6 +4,7 @@ import com.pintor.rest_api_practice.base.rsData.RsData;
 import com.pintor.rest_api_practice.bounded_context.v1.member.entity.Member;
 import com.pintor.rest_api_practice.bounded_context.v1.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -73,7 +74,7 @@ public class MemberController {
         private final Member member;
     }
 
-    @Operation(summary = "로그인한 회원 정보 조회") // 메서드 설명
+    @Operation(summary = "로그인한 회원 정보 조회", security = @SecurityRequirement(name = "bearerAuth")) // 메서드 설명
     @GetMapping(value = "/me", consumes = ALL_VALUE)
     public RsData<MeResponse> me(@AuthenticationPrincipal User user) { // 로그인 된 사용자 받아옴
 
