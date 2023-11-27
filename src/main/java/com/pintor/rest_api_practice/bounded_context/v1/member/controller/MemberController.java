@@ -3,6 +3,8 @@ package com.pintor.rest_api_practice.bounded_context.v1.member.controller;
 import com.pintor.rest_api_practice.base.rsData.RsData;
 import com.pintor.rest_api_practice.bounded_context.v1.member.entity.Member;
 import com.pintor.rest_api_practice.bounded_context.v1.member.service.MemberService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@Tag(name = "api.v1.member_controller", description = "회원 로그인, 엑세스 토큰 발급, 로그인한 회원 정보 조회") // 컨트롤러 이름, 설명
 @RequestMapping(value = "/api/v1/member", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE) // 입출력 json
 @RequiredArgsConstructor
 @RestController
@@ -40,6 +43,7 @@ public class MemberController {
         private final String accessToken;
     }
 
+    @Operation(summary = "로그인, 성공 시 엑세스 토큰 발급") // 메서드 설명
     @PostMapping("/login")
     public RsData<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest,
                         HttpServletResponse response) {
@@ -69,6 +73,7 @@ public class MemberController {
         private final Member member;
     }
 
+    @Operation(summary = "로그인한 회원 정보 조회") // 메서드 설명
     @GetMapping(value = "/me", consumes = ALL_VALUE)
     public RsData<MeResponse> me(@AuthenticationPrincipal User user) { // 로그인 된 사용자 받아옴
 
@@ -80,5 +85,4 @@ public class MemberController {
                 new MeResponse(member)
         );
     }
-
 }
