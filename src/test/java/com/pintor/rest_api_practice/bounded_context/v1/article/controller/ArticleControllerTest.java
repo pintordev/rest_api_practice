@@ -43,4 +43,23 @@ class ArticleControllerTest {
                 .andExpect(jsonPath("$.data.articles[0].id").exists());
     }
 
+    @Test
+    @DisplayName("get:/api/v1/articles/1")
+    public void t2() throws Exception {
+
+        // given
+
+        // when
+        ResultActions resultActions = this.mockMvc
+                .perform(get("/api/v1/articles/1"))
+                .andDo(print());
+
+        // then
+        resultActions
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.code").value("S-1"))
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.data.article.id").value(1));
+    }
+
 }

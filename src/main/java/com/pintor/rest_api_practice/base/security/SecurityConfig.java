@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers("/api/*/members/login").permitAll() // /member/login 아무나 접속 가능
                         .requestMatchers("/api/*/articles").permitAll() // /articles 아무나 접속 가능
+                        .requestMatchers("/api/*/articles/*").permitAll() // /article/# 아무나 접속 가능
                         .anyRequest().authenticated()) // 그 외는 인증된 사용자만 접속 가능
                 .cors(cors -> cors
                         .disable()) // 타 도메인에서 API 호출 가능

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,8 @@ import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "api.v1.article_controller", description = "글 CRUD") // 컨트롤러 이름, 설명
-@RequestMapping(value = "/api/v1/articles", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE) // 입출력 json
+@RequestMapping(value = "/api/v1/articles", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+// 입출력 json
 @RequiredArgsConstructor
 @RestController
 public class ArticleController {
@@ -44,4 +46,31 @@ public class ArticleController {
         );
     }
 
+    @Getter
+    @AllArgsConstructor
+    public static class ArticleResponse {
+        private final Article article;
+    }
+
+    @Operation(summary = "게시글 단건 조회")
+    @GetMapping(value = "/{id}", consumes = ALL_VALUE)
+    public RsData<ArticleResponse> article(@PathVariable("id") Long id) {
+
+        // 최근 경향
+        return this.articleService.getById(id)
+                .map(article ->
+                        RsData.of(
+                                "S-1",
+                                "%d번 게시글을 반환했습니다".formatted(id),
+                                new ArticleResponse(article)
+                        )
+                )
+                .orElseGet(() ->
+                        RsData.of(
+                                "F-1",
+                                "%d번 게시글이 존재하지 않습니다".formatted(id),
+                                null
+                        )
+                );
+    }
 }
