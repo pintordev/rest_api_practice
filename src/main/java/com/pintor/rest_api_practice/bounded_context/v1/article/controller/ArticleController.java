@@ -128,8 +128,8 @@ public class ArticleController {
     @Operation(summary = "게시글 수정", security = @SecurityRequirement(name = "bearerAuth"))
     @PatchMapping(value = "/{id}")
     public RsData<PatchResponse> patch(@AuthenticationPrincipal User user,
-                                      @Valid @RequestBody PatchRequest patchRequest,
-                                      @PathVariable("id") Long id) {
+                                       @Valid @RequestBody PatchRequest patchRequest,
+                                       @PathVariable("id") Long id) {
 
         Article article = this.articleService.getById(id)
                 .orElse(null);
@@ -152,6 +152,32 @@ public class ArticleController {
                 "S-1",
                 "%d번 게시글이 수정되었습니다".formatted(id),
                 new PatchResponse(article)
+        );
+    }
+
+    @Operation(summary = "게시글 삭제", security = @SecurityRequirement(name = "bearerAuth"))
+    @DeleteMapping(value = "/{id}", consumes = ALL_VALUE)
+    public RsData delete (@AuthenticationPrincipal User user,
+                          @PathVariable("id") Long id) {
+
+        Article article = this.articleService.getById(id)
+                .orElse(null);
+
+        if (article == null) return RsData.of(
+                "F-1",
+                "%d번 게시글이 존재하지 않습니다".formatted(id)
+        );
+
+        if (!article.getAuthor().getUsername().equals(user.getUsername())) return RsData.of(
+                "F-2",
+                "%d번 게시글에 대한 삭제 권한이 없습니다".formatted(id)
+        );
+
+        this.articleService.delete(article);
+
+        return RsData.of(
+                "S-1",
+                "%d번 게시글이 삭제되었습니다".formatted(id)
         );
     }
 }

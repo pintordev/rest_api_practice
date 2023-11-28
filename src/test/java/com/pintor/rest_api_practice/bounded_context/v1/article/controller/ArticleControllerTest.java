@@ -68,7 +68,7 @@ class ArticleControllerTest {
 
     @Test
     @WithUserDetails("user1")
-    @DisplayName("post:api/v1/articles")
+    @DisplayName("post:/api/v1/articles")
     public void t3() throws Exception {
 
         // given
@@ -95,7 +95,7 @@ class ArticleControllerTest {
 
     @Test
     @WithUserDetails("user1")
-    @DisplayName("patch:api/v1/articles/4")
+    @DisplayName("patch:/api/v1/articles/4")
     public void t4() throws Exception {
 
         // given
@@ -124,7 +124,7 @@ class ArticleControllerTest {
 
     @Test
     @WithUserDetails("user1")
-    @DisplayName("patch:api/v1/articles/4; partial modification")
+    @DisplayName("patch:/api/v1/articles/4; partial modification")
     public void t5() throws Exception {
 
         // given
@@ -148,5 +148,24 @@ class ArticleControllerTest {
                 .andExpect(jsonPath("$.data.article.id").value(4))
                 .andExpect(jsonPath("$.data.article.title").value("title4"))
                 .andExpect(jsonPath("$.data.article.content").value("content t4"));
+    }
+
+    @Test
+    @WithUserDetails("user1")
+    @DisplayName("delete:/api/v1/articles/4")
+    public void t6() throws Exception {
+
+        // given
+
+        // when
+        ResultActions resultActions = this.mockMvc
+                .perform(delete("/api/v1/articles/4"))
+                .andDo(print());
+
+        // then
+        resultActions
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.code").value("S-1"))
+                .andExpect(jsonPath("$.message").exists());
     }
 }
