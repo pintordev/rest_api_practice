@@ -11,6 +11,7 @@
 - [x] #25 - ArticleControllerTest.t3 post:/api/v1/articles
 - [x] #26 - ArticleControllerTest.t4-5 patch:/api/v1/articles/4; all & partial modification
 - [x] #27 - ArticleControllerTest.t6 delete:/api/v1/articles/4
+- [x] #28 - API 설명 문서 admin만 열람 가능하도록 변경
 
 ## 23-11-27
 - [x] #17 - 로그인 예외상황 실패 메시지 상황별로 정리
