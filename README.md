@@ -7,6 +7,7 @@
 ## 23-11-28
 - [x] #22 - ArticleControllerTest.t1 get:/api/v1/articles
 - [x] #23 - ArticleControllerTest.t2 get:/api/v1/articles/1
+- [x] #24 - 스프링 시큐리티에서 로그인 필요없는 uri에 대해 허용할 http 메서드 지정
 
 ## 23-11-27
 - [x] #17 - 로그인 예외상황 실패 메시지 상황별로 정리
