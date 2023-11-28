@@ -36,4 +36,16 @@ public class ArticleService {
 
         return this.articleRepository.findById(id);
     }
+
+    public Article patch(Article article, String title, String content) {
+
+        article = article.toBuilder()
+                .title(title != null ? title : article.getTitle())
+                .content(content != null ? content : article.getContent())
+                .build();
+
+        this.articleRepository.save(article);
+
+        return article;
+    }
 }

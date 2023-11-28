@@ -110,4 +110,48 @@ public class ArticleController {
                 new PostResponse(article)
         );
     }
+
+    @Getter
+    public static class PatchRequest {
+
+        private String title;
+
+        private String content;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class PatchResponse {
+        private final Article article;
+    }
+
+    @Operation(summary = "게시글 수정", security = @SecurityRequirement(name = "bearerAuth"))
+    @PatchMapping(value = "/{id}")
+    public RsData<PatchResponse> patch(@AuthenticationPrincipal User user,
+                                      @Valid @RequestBody PatchRequest patchRequest,
+                                      @PathVariable("id") Long id) {
+
+        Article article = this.articleService.getById(id)
+                .orElse(null);
+
+        if (article == null) return RsData.of(
+                "F-1",
+                "%d번 게시글이 존재하지 않습니다".formatted(id),
+                null
+        );
+
+        if (!article.getAuthor().getUsername().equals(user.getUsername())) return RsData.of(
+                "F-2",
+                "%d번 게시글에 대한 수정 권한이 없습니다".formatted(id),
+                null
+        );
+
+        article = this.articleService.patch(article, patchRequest.getTitle(), patchRequest.getContent());
+
+        return RsData.of(
+                "S-1",
+                "%d번 게시글이 수정되었습니다".formatted(id),
+                new PatchResponse(article)
+        );
+    }
 }

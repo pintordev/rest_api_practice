@@ -14,8 +14,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -94,4 +93,60 @@ class ArticleControllerTest {
                 .andExpect(jsonPath("$.data.article").exists());
     }
 
+    @Test
+    @WithUserDetails("user1")
+    @DisplayName("patch:api/v1/articles/4")
+    public void t4() throws Exception {
+
+        // given
+
+        // when
+        ResultActions resultActions = this.mockMvc
+                .perform(patch("/api/v1/articles/4")
+                        .content("""
+                                {
+                                    "title": "title t4",
+                                    "content": "content t4"
+                                }
+                                """.stripIndent())
+                        .contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8)))
+                .andDo(print());
+
+        // then
+        resultActions
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.code").value("S-1"))
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.data.article.id").value(4))
+                .andExpect(jsonPath("$.data.article.title").value("title t4"))
+                .andExpect(jsonPath("$.data.article.content").value("content t4"));
+    }
+
+    @Test
+    @WithUserDetails("user1")
+    @DisplayName("patch:api/v1/articles/4; partial modification")
+    public void t5() throws Exception {
+
+        // given
+
+        // when
+        ResultActions resultActions = this.mockMvc
+                .perform(patch("/api/v1/articles/4")
+                        .content("""
+                                {
+                                    "content": "content t4"
+                                }
+                                """.stripIndent())
+                        .contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8)))
+                .andDo(print());
+
+        // then
+        resultActions
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.code").value("S-1"))
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.data.article.id").value(4))
+                .andExpect(jsonPath("$.data.article.title").value("title4"))
+                .andExpect(jsonPath("$.data.article.content").value("content t4"));
+    }
 }
