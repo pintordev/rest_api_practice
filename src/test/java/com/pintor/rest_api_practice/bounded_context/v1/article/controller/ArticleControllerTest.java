@@ -6,11 +6,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.nio.charset.StandardCharsets;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,6 +65,33 @@ class ArticleControllerTest {
                 .andExpect(jsonPath("$.code").value("S-1"))
                 .andExpect(jsonPath("$.message").exists())
                 .andExpect(jsonPath("$.data.article.id").value(1));
+    }
+
+    @Test
+    @WithUserDetails("user1")
+    @DisplayName("post:api/v1/articles")
+    public void t3() throws Exception {
+
+        // given
+
+        // when
+        ResultActions resultActions = this.mockMvc
+                .perform(post("/api/v1/articles")
+                        .content("""
+                                {
+                                    "title": "title t3",
+                                    "content": "content t3"
+                                }
+                                """.stripIndent())
+                        .contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8)))
+                .andDo(print());
+
+        // then
+        resultActions
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.code").value("S-1"))
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.data.article").exists());
     }
 
 }

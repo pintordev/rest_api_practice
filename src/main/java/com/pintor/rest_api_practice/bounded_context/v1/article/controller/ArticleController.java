@@ -3,15 +3,19 @@ package com.pintor.rest_api_practice.bounded_context.v1.article.controller;
 import com.pintor.rest_api_practice.base.rsData.RsData;
 import com.pintor.rest_api_practice.bounded_context.v1.article.entity.Article;
 import com.pintor.rest_api_practice.bounded_context.v1.article.service.ArticleService;
+import com.pintor.rest_api_practice.bounded_context.v1.member.entity.Member;
+import com.pintor.rest_api_practice.bounded_context.v1.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +30,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final MemberService memberService;
 
     @Getter
     @AllArgsConstructor
@@ -72,5 +77,37 @@ public class ArticleController {
                                 null
                         )
                 );
+    }
+
+    @Getter
+    public static class PostRequest {
+
+        @NotBlank
+        private String title;
+
+        @NotBlank
+        private String content;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class PostResponse {
+        private final Article article;
+    }
+
+    @Operation(summary = "게시글 등록", security = @SecurityRequirement(name = "bearerAuth"))
+    @PostMapping
+    public RsData<PostResponse> post(@AuthenticationPrincipal User user,
+                                     @Valid @RequestBody PostRequest postRequest) {
+
+        Member member = this.memberService.getUserByUsername(user.getUsername());
+
+        Article article = this.articleService.post(member, postRequest.getTitle(), postRequest.getContent());
+
+        return RsData.of(
+                "S-1",
+                "게시물이 생성되었습니다",
+                new PostResponse(article)
+        );
     }
 }
