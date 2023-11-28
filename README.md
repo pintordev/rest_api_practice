@@ -4,6 +4,9 @@
 >- **REST API 공부 내용 정리**
 >- **연습용 리포지터리**
 
+## 23-11-28
+- [x] #22 - ArticleControllerTest.t1 get:/api/v1/articles
+
 ## 23-11-27
 - [x] #17 - 로그인 예외상황 실패 메시지 상황별로 정리
 - [x] #18 - SpringDoc으로 API 설명 문서 자동 작성

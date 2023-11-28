@@ -20,7 +20,7 @@ import static org.springframework.http.MediaType.ALL_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Tag(name = "api.v1.member_controller", description = "회원 로그인, 엑세스 토큰 발급, 로그인한 회원 정보 조회") // 컨트롤러 이름, 설명
-@RequestMapping(value = "/api/v1/member", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE) // 입출력 json
+@RequestMapping(value = "/api/v1/members", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE) // 입출력 json
 @RequiredArgsConstructor
 @RestController
 public class MemberController {

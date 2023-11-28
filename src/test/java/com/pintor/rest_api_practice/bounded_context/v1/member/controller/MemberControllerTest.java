@@ -33,14 +33,14 @@ class MemberControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("post:/api/v1/member/login")
+    @DisplayName("post:/api/v1/members/login")
     public void t1() throws Exception {
 
         // given
 
         // when
-        ResultActions resultActions = mockMvc
-                .perform(post("/api/v1/member/login")
+        ResultActions resultActions = this.mockMvc
+                .perform(post("/api/v1/members/login")
                         .content("""
                                 {
                                     "username": "user1",
@@ -57,14 +57,14 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("post:/api/v1/member/login; include accessToken in response header")
+    @DisplayName("post:/api/v1/members/login; include accessToken in response header")
     public void t2() throws Exception {
 
         // given
 
         // when
-        ResultActions resultActions = mockMvc
-                .perform(post("/api/v1/member/login")
+        ResultActions resultActions = this.mockMvc
+                .perform(post("/api/v1/members/login")
                         .content("""
                                 {
                                     "username": "user1",
@@ -87,14 +87,14 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("post:/api/v1/member/login; assert json response body")
+    @DisplayName("post:/api/v1/members/login; assert json response body")
     public void t3() throws Exception {
 
         // given
 
         // when
-        ResultActions resultActions = mockMvc
-                .perform(post("/api/v1/member/login")
+        ResultActions resultActions = this.mockMvc
+                .perform(post("/api/v1/members/login")
                         .content("""
                                 {
                                     "username": "user1",
@@ -114,14 +114,14 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("get:/api/v1/member/me; inquire user information")
+    @DisplayName("get:/api/v1/members/me; inquire user information")
     public void t4() throws Exception {
 
         // given
 
         // when
-        ResultActions resultActions = mockMvc
-                .perform(get("/api/v1/member/me"))
+        ResultActions resultActions = this.mockMvc
+                .perform(get("/api/v1/members/me"))
                 .andDo(print());
 
         // then
@@ -135,14 +135,14 @@ class MemberControllerTest {
 
     @Test
     @WithUserDetails("user1") // user1 로 로그인
-    @DisplayName("get:/api/v1/member/me; inquire user1 information")
+    @DisplayName("get:/api/v1/members/me; inquire user1 information")
     public void t5() throws Exception {
 
         // given
 
         // when
-        ResultActions resultActions = mockMvc
-                .perform(get("/api/v1/member/me"))
+        ResultActions resultActions = this.mockMvc
+                .perform(get("/api/v1/members/me"))
                 .andDo(print());
 
         // then
